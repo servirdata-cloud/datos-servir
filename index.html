@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mostrar Datos JSON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+US+Trad+Guides&display=swap" rel="stylesheet">
+  <style>
+    
+ 
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f8ff; /* Color de fondo suave */
+      color: #e9d5da;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      background-image: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.zwyq-gGj4daTLXe-zkr28gHaFX%3Fpid%3DApi&f=1&ipt=53c1476bb6ec1cf73e769dc133d1d95744a0e3b1bef20f50c29521a01c6c9397&ipo=images);
+      background-size: contain;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px;
+      padding: 10px;
+      background-color: #ede6db88; /* Fondo verde para el título */
+      color: #ff6f00;
+      border-radius: 8px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      text-shadow: 1px 1px 1px #484441; 
+      font-family: "Playwrite US Trad Guides", cursive;
+      font-style:normal; 
+      font-size:24px;
+      font-weight:400; 
+    }
+
+    .region {
+      margin: 20px 0;
+      padding: 15px;
+      /*! background-color: #9d5353; */
+      border-left: 10px solid black; /* Borde verde para las regiones */
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+      color: #e9d5da;
+      text-align: center;
+      padding-left: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .region h2 {
+      color: #000000dd;
+      font-size: 1.8em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .institucion {
+      /*! margin-left: 20px; */
+      /*! background-color: #f9f9f9; */
+      padding: 4px 20px 10px 20px;
+      /*! border-left: 6px solid #ff6961; */ /* Borde azul para las instituciones */
+      border-radius: 5px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+      margin-bottom: 26px;
+      background-image: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffondosaesthetic.com%2Fwp-content%2Fuploads%2F2022%2F07%2FAesthetic-Purple-1-scaled-1.jpg&f=1&nofb=1&ipt=25160a1c4e55db41d0f8e20f96281b6e72520b20c6244db0e3ea52da58f50b48);
+      background-size: cover;
+    }
+
+    .institucion h3 {
+      font-size: 1.4em;
+      color: #f0aecf;
+      text-shadow: 1px 1px 1px black;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul li {
+      background-color: #ede6db88; /* Fondo amarillo suave para los puestos */
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      font-size: 1.1em;
+      color: #000117; /* #9d5353;*/
+      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px #ecdda2; /*#94918f;*/
+    }
+
+    ul li:hover {
+      background-color: #ffcc00; /* Fondo amarillo más intenso cuando se pasa el ratón */
+    }
+
+    .error {
+      color: red;
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 20px;
+    }
+   
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<h1>Datos de Servir</h1>
+<div id="datos"></div>
+<div id="error" class="error"></div>
+  
+<script>
+    // Usamos fetch para cargar el archivo JSON
+    fetch('Servir.json')
+      .then(response => {
+        // Verificamos si la solicitud fue exitosa
+        if (!response.ok) {
+          throw new Error('Error al cargar el archivo JSON');
+        }
+        return response.json();  // Convertimos la respuesta a formato JSON
+      })
+      .then(data => {
+        // Llamamos a la función para renderizar los datos
+        renderizarDatos(data);
+      })
+      .catch(error => {
+        console.error('Hubo un problema con la solicitud Fetch:', error);
+        document.getElementById('error').textContent = 'No se pudo cargar los datos. Intenta nuevamente más tarde.';
+      });
+
+    // Función para renderizar los datos en HTML
+    function renderizarDatos(datos) {
+      const contenedor = document.getElementById('datos');
+      
+      // Recorremos las regiones del JSON
+      for (let region in datos) {
+        const regionDiv = document.createElement('div');
+        regionDiv.classList.add('region');
+        
+        const regionTitulo = document.createElement('h2');
+        regionTitulo.textContent = region;
+        regionDiv.appendChild(regionTitulo);
+
+        // Recorremos las instituciones de cada región
+        for (let institucion in datos[region]) {
+          const institucionDiv = document.createElement('div');
+          institucionDiv.classList.add('institucion');
+
+          const institucionTitulo = document.createElement('h3');
+          institucionTitulo.textContent = institucion;
+          institucionDiv.appendChild(institucionTitulo);
+
+          // Creamos la lista de puestos
+          const puestosLista = document.createElement('ul');
+          datos[region][institucion].forEach(puesto => {
+            const puestoItem = document.createElement('li');
+            puestoItem.textContent = puesto;
+            puestosLista.appendChild(puestoItem);
+          });
+          institucionDiv.appendChild(puestosLista);
+
+          regionDiv.appendChild(institucionDiv);
+        }
+
+        contenedor.appendChild(regionDiv);
+      }
+    }
+  </script>
+
+
+</body></html>
