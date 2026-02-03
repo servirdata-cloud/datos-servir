@@ -17,7 +17,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      background-image: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.zwyq-gGj4daTLXe-zkr28gHaFX%3Fpid%3DApi&f=1&ipt=53c1476bb6ec1cf73e769dc133d1d95744a0e3b1bef20f50c29521a01c6c9397&ipo=images);
+      background-image: url("/OIP-2819839137.jpg");
       background-size: contain;
     }
 
@@ -65,9 +65,8 @@
       border-radius: 5px;
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
       margin-bottom: 26px;
-      background-image: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ffondosaesthetic.com%2Fwp-content%2Fuploads%2F2022%2F07%2FAesthetic-Purple-1-scaled-1.jpg&f=1&nofb=1&ipt=25160a1c4e55db41d0f8e20f96281b6e72520b20c6244db0e3ea52da58f50b48);
-      background-size: cover;
-    }
+      background-color:#00000099;    
+}
 
     .institucion h3 {
       font-size: 1.4em;
@@ -79,6 +78,7 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
+      display:none;
     }
 
     ul li {
@@ -94,16 +94,23 @@
       text-shadow: 1px 1px 1px #ecdda2; /*#94918f;*/
     }
 
+    .institucion:hover {
+      background-color: #000000dd; /* Fondo amarillo más intenso cuando se pasa el ratón */
+    }
+
     ul li:hover {
       background-color: #ffcc00; /* Fondo amarillo más intenso cuando se pasa el ratón */
     }
 
     .error {
-      color: red;
-      font-size: 1.2em;
+      color: #222222;
+      font-size: 1.4em;
       text-align: center;
       margin-top: 20px;
-    }
+      padding: 10px;
+      background-color: #ede6db88; /* Fondo verde para el título */
+
+}
    
 
 
@@ -119,6 +126,19 @@
 <div id="error" class="error"></div>
   
 <script>
+
+
+function sanitizarDatos(cadena) {
+    const div = document.createElement('div');
+    div.innerText = cadena; // Se usa innerText para escapar automáticamente
+    return div.innerHTML;    // Devuelve la versión sanitizada
+}
+
+
+
+
+
+
     // Usamos fetch para cargar el archivo JSON
     fetch('Servir.json')
       .then(response => {
@@ -147,7 +167,7 @@
         regionDiv.classList.add('region');
         
         const regionTitulo = document.createElement('h2');
-        regionTitulo.textContent = region;
+        regionTitulo.textContent = sanitizarDatos(region);
         regionDiv.appendChild(regionTitulo);
 
         // Recorremos las instituciones de cada región
@@ -156,14 +176,15 @@
           institucionDiv.classList.add('institucion');
 
           const institucionTitulo = document.createElement('h3');
-          institucionTitulo.textContent = institucion;
+          institucionTitulo.classList.add('titulo');
+	  institucionTitulo.addEventListener('click',show_data)
+	  institucionTitulo.textContent = sanitizarDatos(institucion) +" puestos disponibles: "+ datos[region][institucion].length ;
           institucionDiv.appendChild(institucionTitulo);
-
           // Creamos la lista de puestos
           const puestosLista = document.createElement('ul');
           datos[region][institucion].forEach(puesto => {
             const puestoItem = document.createElement('li');
-            puestoItem.textContent = puesto;
+            puestoItem.textContent = sanitizarDatos(puesto);
             puestosLista.appendChild(puestoItem);
           });
           institucionDiv.appendChild(puestosLista);
@@ -174,6 +195,33 @@
         contenedor.appendChild(regionDiv);
       }
     }
+
+
+//document.querySelectorAll('.titulo').forEach(titulo => {
+  //  titulo.addEventListener('click', function() {
+        // Alternar el contenido
+    
+function show_data(e){
+        const contenido = this.nextElementSibling; 
+        
+        if (contenido.style.display === 'block') {
+            contenido.style.display = 'none'; // Ocultar
+        } else {
+	
+        document.querySelectorAll('.institucion ul').forEach(c => {
+            c.style.display = 'none'; // Oculta otros contenidos
+        });
+        contenido.style.display = 'block'; // Mostrar
+    }
+
+
+
+
+    };
+
+
+
+
   </script>
 
 
