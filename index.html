@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="icon" type="image/x-icon" href="/datos-servir/icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mostrar Datos JSON</title>
+  <title>Jobs view</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playwrite+US+Trad+Guides&display=swap" rel="stylesheet">
@@ -66,6 +67,7 @@
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
       margin-bottom: 26px;
       background-color:#00000099;    
+      cursor:pointer;
 }
 
     .institucion h3 {
@@ -173,11 +175,11 @@ function sanitizarDatos(cadena) {
         // Recorremos las instituciones de cada región
         for (let institucion in datos[region]) {
           const institucionDiv = document.createElement('div');
+	  institucionDiv.addEventListener('click',show_data)
           institucionDiv.classList.add('institucion');
 
           const institucionTitulo = document.createElement('h3');
           institucionTitulo.classList.add('titulo');
-	  institucionTitulo.addEventListener('click',show_data)
 	  institucionTitulo.textContent = sanitizarDatos(institucion) +" puestos disponibles: "+ datos[region][institucion].length ;
           institucionDiv.appendChild(institucionTitulo);
           // Creamos la lista de puestos
@@ -202,7 +204,7 @@ function sanitizarDatos(cadena) {
         // Alternar el contenido
     
 function show_data(e){
-        const contenido = this.nextElementSibling; 
+        const contenido = this.lastChild; 
         
         if (contenido.style.display === 'block') {
             contenido.style.display = 'none'; // Ocultar
