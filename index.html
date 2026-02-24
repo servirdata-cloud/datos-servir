@@ -142,7 +142,7 @@ function sanitizarDatos(cadena) {
 
 
     // Usamos fetch para cargar el archivo JSON
-    fetch('Servir.json')
+    fetch('/datos-servir/Servir.json')
       .then(response => {
         // Verificamos si la solicitud fue exitosa
         if (!response.ok) {
